@@ -2110,6 +2110,11 @@ export class RunnableWithFallbacks<RunInput, RunOutput> extends Runnable<
         if (firstError === undefined) {
           firstError = e;
         }
+        // if e?.name === "AbortError" then the error was thrown by the stream iterator, and dont continue to the next fallback
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        if (e != null && (e as any)?.name === "AbortError") {
+          break
+        }
       }
     }
     if (firstError === undefined) {
@@ -2252,6 +2257,11 @@ export class RunnableWithFallbacks<RunInput, RunOutput> extends Runnable<
       } catch (e) {
         if (firstError === undefined) {
           firstError = e;
+        }
+        // if e?.name === "AbortError" then the error was thrown by the stream iterator, and dont continue to the next fallback
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        if (e != null && (e as any)?.name === "AbortError") {
+          break
         }
       }
     }
